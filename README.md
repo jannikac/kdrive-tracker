@@ -2,10 +2,6 @@
 
 Tracker for K-Drive races in Orb Vallis.
 
-## AI Usage
-
-AI was used in the creation of this tool. I tweaked the appearannce and internal implementation to be more sound.
-
 ## Motivation
 
 This project exists as a lightweight companion for the Orb Vallis K-Drive races in Warframe.
@@ -23,6 +19,10 @@ Your progress is stored with the browser `localStorage` API. That means:
 - If you clear site data or browser storage, your saved checklist will be removed.
 
 In this app, the race progress is stored locally under the key `kdrive-race-progress`.
+
+## AI Usage
+
+AI was used in the creation of this tool. I tweaked the appearannce and internal implementation to be more sound.
 
 ## Contribution
 
