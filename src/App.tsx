@@ -323,8 +323,8 @@ function App() {
   const completeAll = () => setCompletedIds(races.map((race) => race.id));
 
   return (
-    <div className="container mx-auto min-h-screen max-w-7xl px-4 py-4 sm:py-6">
-      <header className="mb-5 grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+    <div className="container mx-auto min-h-screen max-w-screen-2xl px-4 py-4 sm:py-6">
+      <header className="mb-5 grid items-start gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
         <div>
           <h1 className="mb-3.5 text-2xl">K-Drive Race Tracker</h1>
           <p className="text-muted-foreground">
@@ -343,7 +343,7 @@ function App() {
         </div>
       </header>
 
-      <main className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(380px,0.8fr)]">
+      <main className="grid gap-5 xl:grid-cols-[minmax(420px,1.2fr)_minmax(380px,0.8fr)]">
         <Panel>
           <PanelHeader title="Race Map" />
           <RaceMap
