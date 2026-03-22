@@ -1,6 +1,8 @@
 # kdrive-tracker
 
-Tracker for K-Drive races in Orb Vallis.
+A tracker for K-Drive races in Orb Vallis.
+
+<img width="1541" height="875" alt="Screenshot_20260322_180530-1" src="https://github.com/user-attachments/assets/1315bfea-6160-45f3-aea3-54ac2ffd0bd6" />
 
 ## Motivation
 
