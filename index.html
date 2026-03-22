@@ -4,6 +4,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#09090b" />
+    <style>
+      html {
+        background: #ffffff;
+      }
+
+      html.dark {
+        background: #09090b;
+      }
+    </style>
+    <script>
+      (() => {
+        const storageKey = "vite-ui-theme";
+        const root = document.documentElement;
+        const storedTheme = localStorage.getItem(storageKey);
+        const resolvedTheme =
+          storedTheme === "light" || storedTheme === "dark"
+            ? storedTheme
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+
+        root.classList.remove("light", "dark");
+        root.classList.add(resolvedTheme);
+        root.style.colorScheme = resolvedTheme;
+      })();
+    </script>
     <title>kdrive-tracker</title>
   </head>
   <body>
