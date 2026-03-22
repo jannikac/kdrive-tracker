@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { races, type LabelSide, type Race } from "./races";
+import imgUrl from "@/assets/OrbVallisBaseMap.png";
 
 const STORAGE_KEY = "kdrive-race-progress";
 const MAP_WIDTH = 4000;
@@ -307,7 +308,7 @@ function RaceMap({
       scrollWheelZoom
       attributionControl={false}
     >
-      <ImageOverlay bounds={mapBounds} url="/assets/OrbVallisBaseMap.png" />
+      <ImageOverlay bounds={mapBounds} url={imgUrl} />
       <Pane name="markers" style={{ zIndex: 600 }}>
         {races.map((race: Race) => {
           const isCompleted = completed.has(race.id);
