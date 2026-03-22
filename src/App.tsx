@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { Button } from "@/components/ui/button";
 import { races, type LabelSide, type Race } from "./races";
 
 const STORAGE_KEY = "kdrive-race-progress";
@@ -169,11 +170,19 @@ function getLabelOffset(labelSide?: LabelSide): PointExpression {
 function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
   return (
     <article
-      className={`rounded-[18px] border border-[rgba(118,200,255,0.18)] p-[18px] shadow-[0_16px_45px_rgba(0,0,0,0.22)] backdrop-blur-[10px] ${
-        accent ? "bg-[rgba(8,18,28,0.9)]" : "bg-[rgba(8,18,28,0.78)]"
+      className={`rounded-[18px] border p-[18px] shadow-sm ${
+        accent
+          ? "border-primary/15 bg-primary text-primary-foreground"
+          : "border-border bg-card text-card-foreground"
       }`}
     >
-      <span className="mb-1.5 block text-[0.88rem] text-[#8fb1c8]">{label}</span>
+      <span
+        className={`mb-1.5 block text-[0.88rem] ${
+          accent ? "text-primary-foreground/70" : "text-muted-foreground"
+        }`}
+      >
+        {label}
+      </span>
       <strong className="text-[clamp(1.4rem,2vw,2rem)]">{value}</strong>
     </article>
   );
@@ -182,7 +191,7 @@ function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
 function Panel({ children, className = "" }: PanelProps) {
   return (
     <section
-      className={`overflow-hidden rounded-[24px] border border-[rgba(118,200,255,0.18)] bg-[rgba(8,18,28,0.78)] shadow-[0_16px_45px_rgba(0,0,0,0.22)] backdrop-blur-[10px] ${className}`}
+      className={`overflow-hidden rounded-[24px] border border-border bg-card text-card-foreground shadow-sm ${className}`}
     >
       {children}
     </section>
@@ -191,10 +200,12 @@ function Panel({ children, className = "" }: PanelProps) {
 
 function PanelHeader({ title, description, action }: PanelHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-b-[rgba(118,200,255,0.12)] px-5 py-[18px] max-[720px]:flex-col">
+    <div className="flex items-start justify-between gap-4 border-b border-border px-5 py-[18px] max-[720px]:flex-col">
       <div>
         <h2 className="text-[1.5rem] leading-tight">{title}</h2>
-        {description ? <p className="max-w-[60ch] text-[#b4cadc]">{description}</p> : null}
+        {description ? (
+          <p className="max-w-[60ch] text-muted-foreground">{description}</p>
+        ) : null}
       </div>
       {action}
     </div>
@@ -208,7 +219,7 @@ function TableCell({ children, as = "td" }: TableCellProps) {
     <Component
       className={`whitespace-nowrap px-4 py-3.5 text-left max-[720px]:p-3 ${
         as === "th"
-          ? "text-[0.82rem] uppercase tracking-[0.06em] text-[#8fb1c8]"
+          ? "text-[0.82rem] uppercase tracking-[0.06em] text-muted-foreground"
           : ""
       }`}
     >
@@ -222,8 +233,8 @@ function StatusPill({ completed }: StatusPillProps) {
     <span
       className={`inline-flex min-w-[58px] items-center justify-center rounded-full px-2.5 py-1.5 text-[0.8rem] ${
         completed
-          ? "bg-[rgba(142,212,75,0.18)] text-[#e8ffd1]"
-          : "bg-[rgba(118,200,255,0.1)] text-[#8fb1c8]"
+          ? "bg-primary/10 text-primary"
+          : "bg-muted text-muted-foreground"
       }`}
     >
       {completed ? "Done" : "Open"}
@@ -322,13 +333,13 @@ function App() {
     <div className="mx-auto min-h-screen w-[min(1500px,calc(100vw-32px))] px-0 py-6 pb-8 max-[720px]:w-[min(100vw-20px,100%)] max-[720px]:pt-3.5">
       <header className="mb-5 grid items-start gap-5 min-[1121px]:grid-cols-[minmax(280px,1.1fr)_minmax(320px,0.9fr)] max-[1120px]:grid-cols-1">
         <div>
-          <p className="mb-2 text-[0.78rem] uppercase tracking-[0.2em] text-[#76c8ff]">
+          <p className="mb-2 text-[0.78rem] uppercase tracking-[0.2em] text-muted-foreground">
             Orb Vallis
           </p>
           <h1 className="mb-3.5 text-[clamp(2.3rem,3vw,3.8rem)] leading-[0.95]">
             K-Drive Race Tracker
           </h1>
-          <p className="max-w-[60ch] text-[#b4cadc]">
+          <p className="max-w-[60ch] text-muted-foreground">
             Click any marker on the map or any row in the table to mark a race
             as completed. Your progress is stored locally in this browser.
           </p>
@@ -356,20 +367,19 @@ function App() {
         <Panel className="flex flex-col">
           <PanelHeader
             action={
-              <button
-                className="cursor-pointer rounded-full border border-[rgba(118,200,255,0.24)] bg-[rgba(118,200,255,0.08)] px-4 py-2.5 text-[#ecf5ff] transition duration-200 ease-out hover:-translate-y-px hover:bg-[rgba(118,200,255,0.16)]"
+              <Button
                 onClick={clearAll}
                 type="button"
               >
                 Clear progress
-              </button>
+              </Button>
             }
             title="Race List"
           />
 
           <div className="overflow-auto">
             <table className="w-full border-collapse">
-              <thead className="sticky top-0 z-[1] bg-[rgba(8,18,28,0.98)]">
+              <thead className="sticky top-0 z-[1] bg-card">
                 <tr>
                   <TableCell as="th">Status</TableCell>
                   <TableCell as="th">Race</TableCell>
@@ -383,14 +393,14 @@ function App() {
                   const isCompleted = completed.has(race.id);
                   const isFocused = focusedRaceId === race.id;
                   const rowClassName = [
-                    "cursor-pointer border-t border-t-[rgba(118,200,255,0.08)] transition duration-150 ease-out",
+                    "cursor-pointer border-t border-border transition-colors duration-150 ease-out",
                     isCompleted
                       ? isFocused
-                        ? "bg-[rgba(160,224,101,0.2)]"
-                        : "bg-[rgba(142,212,75,0.12)]"
+                        ? "bg-primary/15"
+                        : "bg-primary/10"
                       : isFocused
-                        ? "bg-[rgba(76,164,255,0.12)]"
-                        : "hover:bg-[rgba(76,164,255,0.12)]",
+                        ? "bg-accent"
+                        : "hover:bg-muted/60",
                   ].join(" ");
 
                   return (
