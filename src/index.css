@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #ecf5ff;
+  background: #1f242b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.leaflet-tooltip.is-complete {
+  background: rgba(49, 59, 68, 0.9);
+  border-color: rgba(159, 171, 181, 0.4);
+  color: #c4cfd7;
+  opacity: 0.82;
+}
+
+.leaflet-tooltip-right.is-complete::before {
+  border-right-color: rgba(49, 59, 68, 0.9);
+}
+
+.leaflet-tooltip-left.is-complete::before {
+  border-left-color: rgba(49, 59, 68, 0.9);
+}
