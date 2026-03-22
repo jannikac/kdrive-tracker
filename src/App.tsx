@@ -131,7 +131,7 @@ function getRaceIconHtml({ completed, active }: RaceIconOptions): string {
 }
 
 function getMarkerLabelClassName(completed: boolean, active: boolean): string {
-  return cn(completed && "is-complete", active && "translate-y-[-1px]");
+      return cn(completed && "is-complete", active && "translate-y-[-1px]");
 }
 
 // Marker SVG adapted from the Orb Vallis map on the Warframe wiki:
@@ -174,7 +174,7 @@ function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
   return (
     <article
       className={cn(
-        "rounded-md border p-[18px] shadow-sm",
+        "rounded-md border p-4 shadow-sm",
         accent
           ? "border-primary/15 bg-primary text-primary-foreground"
           : "border-border bg-card text-card-foreground",
@@ -208,11 +208,11 @@ function Panel({ children, className = "" }: PanelProps) {
 
 function PanelHeader({ title, description, action }: PanelHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-border px-5 py-[18px] max-[720px]:flex-col">
+    <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-5">
       <div>
         <h2>{title}</h2>
         {description ? (
-          <p className="max-w-[60ch] text-muted-foreground">{description}</p>
+          <p className="max-w-prose text-muted-foreground">{description}</p>
         ) : null}
       </div>
       {action}
@@ -323,8 +323,8 @@ function App() {
   const completeAll = () => setCompletedIds(races.map((race) => race.id));
 
   return (
-    <div className="mx-auto min-h-screen w-[min(1500px,calc(100vw-32px))] px-0 py-6 pb-8 max-[720px]:w-[min(100vw-20px,100%)] max-[720px]:pt-3.5">
-      <header className="mb-5 grid items-start gap-5 min-[1121px]:grid-cols-[minmax(280px,1.1fr)_minmax(320px,0.9fr)] max-[1120px]:grid-cols-1">
+    <div className="container mx-auto min-h-screen max-w-7xl px-4 py-4 sm:py-6">
+      <header className="mb-5 grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
         <div>
           <h1 className="mb-3.5 text-2xl">K-Drive Race Tracker</h1>
           <p className="text-muted-foreground">
@@ -343,8 +343,8 @@ function App() {
         </div>
       </header>
 
-      <main className="grid gap-5 min-[1121px]:grid-cols-[minmax(420px,1.2fr)_minmax(380px,0.8fr)] max-[1120px]:grid-cols-1">
-        <Panel className="max-[1120px]:min-h-0">
+      <main className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(380px,0.8fr)]">
+        <Panel>
           <PanelHeader title="Race Map" />
           <RaceMap
             completed={completed}
@@ -362,7 +362,7 @@ function App() {
                   Clear all
                 </Button>
                 <Button onClick={completeAll} type="button" variant="secondary">
-                  Select all
+                  Complete all
                 </Button>
               </div>
             }
@@ -370,7 +370,7 @@ function App() {
           />
 
           <Table>
-            <TableHeader className="sticky top-0 z-[1] bg-card">
+            <TableHeader className="sticky top-0 z-10 bg-card">
               <TableRow>
                 <TableHead>Status</TableHead>
                 <TableHead>Race</TableHead>
