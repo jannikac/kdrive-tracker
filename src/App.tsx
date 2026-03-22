@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import type { DivIcon, PointExpression } from "leaflet";
 import L from "leaflet";
+import { CheckSquare2, Square } from "lucide-react";
 import {
   ImageOverlay,
   MapContainer,
@@ -10,6 +11,14 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { races, type LabelSide, type Race } from "./races";
 
@@ -59,12 +68,7 @@ type PanelHeaderProps = {
   action?: ReactNode;
 };
 
-type TableCellProps = {
-  children: ReactNode;
-  as?: "td" | "th";
-};
-
-type StatusPillProps = {
+type StatusIconProps = {
   completed: boolean;
 };
 
@@ -216,32 +220,17 @@ function PanelHeader({ title, description, action }: PanelHeaderProps) {
   );
 }
 
-function TableCell({ children, as = "td" }: TableCellProps) {
-  const Component = as;
+function StatusIcon({ completed }: StatusIconProps) {
+  const Icon = completed ? CheckSquare2 : Square;
 
   return (
-    <Component
+    <Icon
+      aria-hidden="true"
       className={cn(
-        "whitespace-nowrap px-4 py-3.5 text-left max-[720px]:p-3",
-        as === "th" &&
-          "text-[0.82rem] uppercase tracking-[0.06em] text-muted-foreground",
+        "size-4",
+        completed ? "text-primary" : "text-muted-foreground",
       )}
-    >
-      {children}
-    </Component>
-  );
-}
-
-function StatusPill({ completed }: StatusPillProps) {
-  return (
-    <span
-      className={cn(
-        "inline-flex min-w-[58px] items-center justify-center rounded-md px-2.5 py-1.5 text-[0.8rem]",
-        completed ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground",
-      )}
-    >
-      {completed ? "Done" : "Open"}
-    </span>
+    />
   );
 }
 
@@ -370,63 +359,58 @@ function App() {
         <Panel className="flex flex-col">
           <PanelHeader
             action={
-              <Button
-                onClick={clearAll}
-                type="button"
-              >
+              <Button onClick={clearAll} type="button">
                 Clear progress
               </Button>
             }
             title="Race List"
           />
 
-          <div className="overflow-auto">
-            <table className="w-full border-collapse">
-              <thead className="sticky top-0 z-[1] bg-card">
-                <tr>
-                  <TableCell as="th">Status</TableCell>
-                  <TableCell as="th">Race</TableCell>
-                  <TableCell as="th">Gates</TableCell>
-                  <TableCell as="th">Standing</TableCell>
-                  <TableCell as="th">Affinity</TableCell>
-                </tr>
-              </thead>
-              <tbody>
-                {races.map((race: Race) => {
-                  const isCompleted = completed.has(race.id);
-                  const isFocused = focusedRaceId === race.id;
-                  const rowClassName = cn(
-                    "cursor-pointer border-t border-border transition-colors duration-150 ease-out",
-                    isCompleted
-                      ? isFocused
-                        ? "bg-primary/15"
-                        : "bg-primary/10"
-                      : isFocused
-                        ? "bg-accent"
-                        : "hover:bg-muted/60",
-                  );
+          <Table>
+            <TableHeader className="sticky top-0 z-[1] bg-card">
+              <TableRow>
+                <TableHead>Status</TableHead>
+                <TableHead>Race</TableHead>
+                <TableHead>Gates</TableHead>
+                <TableHead>Standing</TableHead>
+                <TableHead>Affinity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {races.map((race: Race) => {
+                const isCompleted = completed.has(race.id);
+                const isFocused = focusedRaceId === race.id;
+                const rowClassName = cn(
+                  "cursor-pointer",
+                  isCompleted
+                    ? isFocused
+                      ? "bg-primary/15 hover:bg-primary/15"
+                      : "bg-primary/10 hover:bg-primary/10"
+                    : isFocused
+                      ? "bg-accent hover:bg-accent"
+                      : undefined,
+                );
 
-                  return (
-                    <tr
-                      key={race.id}
-                      className={rowClassName}
-                      onClick={() => toggleRace(race.id)}
-                      onMouseEnter={() => setFocusedRaceId(race.id)}
-                      onMouseLeave={() => setFocusedRaceId(null)}
-                    >
-                      <TableCell>
-                        <StatusPill completed={isCompleted} />
-                      </TableCell>
-                      <TableCell>{race.name}</TableCell>
-                      <TableCell>{race.gates}</TableCell>
-                      <TableCell>{formatNumber(race.standing)}</TableCell>
-                      <TableCell>{formatNumber(race.affinity)}</TableCell>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                return (
+                  <TableRow
+                    key={race.id}
+                    className={rowClassName}
+                    onClick={() => toggleRace(race.id)}
+                    onMouseEnter={() => setFocusedRaceId(race.id)}
+                    onMouseLeave={() => setFocusedRaceId(null)}
+                  >
+                    <TableCell>
+                      <StatusIcon completed={isCompleted} />
+                    </TableCell>
+                    <TableCell>{race.name}</TableCell>
+                    <TableCell>{race.gates}</TableCell>
+                    <TableCell>{formatNumber(race.standing)}</TableCell>
+                    <TableCell>{formatNumber(race.affinity)}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </Panel>
       </main>
     </div>
