@@ -260,7 +260,7 @@ function RaceMap({
 
           return (
             <Marker
-              key={`${race.id}-${isCompleted ? "done" : "open"}-${isFocused ? "focused" : "idle"}`}
+              key={`${race.id}-${isCompleted ? "done" : "open"}`}
               eventHandlers={{
                 click: () => onToggle(race.id),
                 mouseover: () => onFocus(race.id),
