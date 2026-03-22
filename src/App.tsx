@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { DivIcon, PointExpression } from "leaflet";
 import L from "leaflet";
 import { CheckSquare2, Square } from "lucide-react";
@@ -29,8 +29,8 @@ const mapBounds: [[number, number], [number, number]] = [
   [0, 0],
   [IMAGE_HEIGHT, MAP_WIDTH],
 ];
-const RIGHT_LABEL_OFFSET: PointExpression = [6, -8];
-const LEFT_LABEL_OFFSET: PointExpression = [-16, -8];
+const RIGHT_LABEL_OFFSET: [number, number] = [6, -8];
+const LEFT_LABEL_OFFSET: [number, number] = [-16, -8];
 
 type RaceIconOptions = {
   completed: boolean;
@@ -40,6 +40,14 @@ type RaceIconOptions = {
 type RaceMapProps = {
   completed: Set<string>;
   focusedRaceId: string | null;
+  onToggle: (raceId: string) => void;
+  onFocus: (raceId: string | null) => void;
+};
+
+type RaceMarkerProps = {
+  race: Race;
+  completed: boolean;
+  focused: boolean;
   onToggle: (raceId: string) => void;
   onFocus: (raceId: string | null) => void;
 };
@@ -130,8 +138,8 @@ function getRaceIconHtml({ completed, active }: RaceIconOptions): string {
       </span>`;
 }
 
-function getMarkerLabelClassName(completed: boolean, active: boolean): string {
-      return cn(completed && "is-complete", active && "translate-y-[-1px]");
+function getMarkerLabelClassName(completed: boolean): string {
+  return cn(completed && "is-complete");
 }
 
 // Marker SVG adapted from the Orb Vallis map on the Warframe wiki:
@@ -166,8 +174,9 @@ function getInitialCompleted(): string[] {
   }
 }
 
-function getLabelOffset(labelSide?: LabelSide): PointExpression {
-  return labelSide === "left" ? LEFT_LABEL_OFFSET : RIGHT_LABEL_OFFSET;
+function getLabelOffset(labelSide?: LabelSide, active = false): PointExpression {
+  const [x, y] = labelSide === "left" ? LEFT_LABEL_OFFSET : RIGHT_LABEL_OFFSET;
+  return [x, active ? y - 1 : y];
 }
 
 function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
@@ -234,6 +243,52 @@ function StatusIcon({ completed }: StatusIconProps) {
   );
 }
 
+function RaceMarker({
+  race,
+  completed,
+  focused,
+  onToggle,
+  onFocus,
+}: RaceMarkerProps) {
+  const tooltipRef = useRef<L.Tooltip | null>(null);
+
+  useEffect(() => {
+    const tooltip = tooltipRef.current;
+
+    if (!tooltip) {
+      return;
+    }
+
+    const [x, y] = getLabelOffset(race.labelSide, focused) as [number, number];
+    tooltip.options.offset = L.point(x, y);
+    tooltip.update();
+  }, [focused, race.labelSide]);
+
+  return (
+    <Marker
+      key={`${race.id}-${completed ? "done" : "open"}`}
+      eventHandlers={{
+        click: () => onToggle(race.id),
+        mouseover: () => onFocus(race.id),
+        mouseout: () => onFocus(null),
+      }}
+      icon={raceIcon({ completed, active: focused })}
+      position={[race.y, race.x]}
+    >
+      <Tooltip
+        ref={tooltipRef}
+        className={getMarkerLabelClassName(completed)}
+        direction={race.labelSide === "left" ? "left" : "right"}
+        offset={getLabelOffset(race.labelSide)}
+        opacity={1}
+        permanent
+      >
+        {race.name}
+      </Tooltip>
+    </Marker>
+  );
+}
+
 function RaceMap({
   completed,
   focusedRaceId,
@@ -259,26 +314,14 @@ function RaceMap({
           const isFocused = focusedRaceId === race.id;
 
           return (
-            <Marker
+            <RaceMarker
               key={`${race.id}-${isCompleted ? "done" : "open"}`}
-              eventHandlers={{
-                click: () => onToggle(race.id),
-                mouseover: () => onFocus(race.id),
-                mouseout: () => onFocus(null),
-              }}
-              icon={raceIcon({ completed: isCompleted, active: isFocused })}
-              position={[race.y, race.x]}
-            >
-              <Tooltip
-                className={getMarkerLabelClassName(isCompleted, isFocused)}
-                direction={race.labelSide === "left" ? "left" : "right"}
-                offset={getLabelOffset(race.labelSide)}
-                opacity={1}
-                permanent
-              >
-                {race.name}
-              </Tooltip>
-            </Marker>
+              race={race}
+              completed={isCompleted}
+              focused={isFocused}
+              onFocus={onFocus}
+              onToggle={onToggle}
+            />
           );
         })}
       </Pane>
