@@ -182,13 +182,13 @@ function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
     >
       <span
         className={cn(
-          "mb-1.5 block text-[0.88rem]",
+          "mb-1.5 block",
           accent ? "text-primary-foreground/70" : "text-muted-foreground",
         )}
       >
         {label}
       </span>
-      <strong className="text-[clamp(1.4rem,2vw,2rem)]">{value}</strong>
+      <strong>{value}</strong>
     </article>
   );
 }
@@ -210,7 +210,7 @@ function PanelHeader({ title, description, action }: PanelHeaderProps) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-border px-5 py-[18px] max-[720px]:flex-col">
       <div>
-        <h2 className="text-[1.5rem] leading-tight">{title}</h2>
+        <h2>{title}</h2>
         {description ? (
           <p className="max-w-[60ch] text-muted-foreground">{description}</p>
         ) : null}
@@ -326,15 +326,12 @@ function App() {
     <div className="mx-auto min-h-screen w-[min(1500px,calc(100vw-32px))] px-0 py-6 pb-8 max-[720px]:w-[min(100vw-20px,100%)] max-[720px]:pt-3.5">
       <header className="mb-5 grid items-start gap-5 min-[1121px]:grid-cols-[minmax(280px,1.1fr)_minmax(320px,0.9fr)] max-[1120px]:grid-cols-1">
         <div>
-          <p className="mb-2 text-[0.78rem] uppercase tracking-[0.2em] text-muted-foreground">
-            Orb Vallis
-          </p>
-          <h1 className="mb-3.5 text-[clamp(2.3rem,3vw,3.8rem)] leading-[0.95]">
-            K-Drive Race Tracker
-          </h1>
-          <p className="max-w-[60ch] text-muted-foreground">
+          <h1 className="mb-3.5 text-2xl">K-Drive Race Tracker</h1>
+          <p className="text-muted-foreground">
             Click any marker on the map or any row in the table to mark a race
-            as completed. Your progress is stored locally in this browser.
+            as completed.
+            <br />
+            Your progress is stored locally in this browser.
           </p>
         </div>
         <div>
