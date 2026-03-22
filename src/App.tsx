@@ -10,6 +10,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { races, type LabelSide, type Race } from "./races";
 
 const STORAGE_KEY = "kdrive-race-progress";
@@ -126,9 +127,7 @@ function getRaceIconHtml({ completed, active }: RaceIconOptions): string {
 }
 
 function getMarkerLabelClassName(completed: boolean, active: boolean): string {
-  return [completed ? "is-complete" : "", active ? "translate-y-[-1px]" : ""]
-    .filter(Boolean)
-    .join(" ");
+  return cn(completed && "is-complete", active && "translate-y-[-1px]");
 }
 
 // Marker SVG adapted from the Orb Vallis map on the Warframe wiki:
@@ -170,16 +169,18 @@ function getLabelOffset(labelSide?: LabelSide): PointExpression {
 function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
   return (
     <article
-      className={`rounded-md border p-[18px] shadow-sm ${
+      className={cn(
+        "rounded-md border p-[18px] shadow-sm",
         accent
           ? "border-primary/15 bg-primary text-primary-foreground"
-          : "border-border bg-card text-card-foreground"
-      }`}
+          : "border-border bg-card text-card-foreground",
+      )}
     >
       <span
-        className={`mb-1.5 block text-[0.88rem] ${
-          accent ? "text-primary-foreground/70" : "text-muted-foreground"
-        }`}
+        className={cn(
+          "mb-1.5 block text-[0.88rem]",
+          accent ? "text-primary-foreground/70" : "text-muted-foreground",
+        )}
       >
         {label}
       </span>
@@ -191,7 +192,10 @@ function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
 function Panel({ children, className = "" }: PanelProps) {
   return (
     <section
-      className={`overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-sm ${className}`}
+      className={cn(
+        "overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-sm",
+        className,
+      )}
     >
       {children}
     </section>
@@ -217,11 +221,11 @@ function TableCell({ children, as = "td" }: TableCellProps) {
 
   return (
     <Component
-      className={`whitespace-nowrap px-4 py-3.5 text-left max-[720px]:p-3 ${
-        as === "th"
-          ? "text-[0.82rem] uppercase tracking-[0.06em] text-muted-foreground"
-          : ""
-      }`}
+      className={cn(
+        "whitespace-nowrap px-4 py-3.5 text-left max-[720px]:p-3",
+        as === "th" &&
+          "text-[0.82rem] uppercase tracking-[0.06em] text-muted-foreground",
+      )}
     >
       {children}
     </Component>
@@ -231,11 +235,10 @@ function TableCell({ children, as = "td" }: TableCellProps) {
 function StatusPill({ completed }: StatusPillProps) {
   return (
     <span
-      className={`inline-flex min-w-[58px] items-center justify-center rounded-md px-2.5 py-1.5 text-[0.8rem] ${
-        completed
-          ? "bg-primary/10 text-primary"
-          : "bg-muted text-muted-foreground"
-      }`}
+      className={cn(
+        "inline-flex min-w-[58px] items-center justify-center rounded-md px-2.5 py-1.5 text-[0.8rem]",
+        completed ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground",
+      )}
     >
       {completed ? "Done" : "Open"}
     </span>
@@ -392,7 +395,7 @@ function App() {
                 {races.map((race: Race) => {
                   const isCompleted = completed.has(race.id);
                   const isFocused = focusedRaceId === race.id;
-                  const rowClassName = [
+                  const rowClassName = cn(
                     "cursor-pointer border-t border-border transition-colors duration-150 ease-out",
                     isCompleted
                       ? isFocused
@@ -401,7 +404,7 @@ function App() {
                       : isFocused
                         ? "bg-accent"
                         : "hover:bg-muted/60",
-                  ].join(" ");
+                  );
 
                   return (
                     <tr
