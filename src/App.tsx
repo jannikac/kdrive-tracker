@@ -170,7 +170,7 @@ function getLabelOffset(labelSide?: LabelSide): PointExpression {
 function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
   return (
     <article
-      className={`rounded-[18px] border p-[18px] shadow-sm ${
+      className={`rounded-md border p-[18px] shadow-sm ${
         accent
           ? "border-primary/15 bg-primary text-primary-foreground"
           : "border-border bg-card text-card-foreground"
@@ -191,7 +191,7 @@ function SummaryCard({ label, value, accent = false }: SummaryCardProps) {
 function Panel({ children, className = "" }: PanelProps) {
   return (
     <section
-      className={`overflow-hidden rounded-[24px] border border-border bg-card text-card-foreground shadow-sm ${className}`}
+      className={`overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-sm ${className}`}
     >
       {children}
     </section>
@@ -231,7 +231,7 @@ function TableCell({ children, as = "td" }: TableCellProps) {
 function StatusPill({ completed }: StatusPillProps) {
   return (
     <span
-      className={`inline-flex min-w-[58px] items-center justify-center rounded-full px-2.5 py-1.5 text-[0.8rem] ${
+      className={`inline-flex min-w-[58px] items-center justify-center rounded-md px-2.5 py-1.5 text-[0.8rem] ${
         completed
           ? "bg-primary/10 text-primary"
           : "bg-muted text-muted-foreground"
