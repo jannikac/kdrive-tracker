@@ -320,6 +320,7 @@ function App() {
   };
 
   const clearAll = () => setCompletedIds([]);
+  const completeAll = () => setCompletedIds(races.map((race) => race.id));
 
   return (
     <div className="mx-auto min-h-screen w-[min(1500px,calc(100vw-32px))] px-0 py-6 pb-8 max-[720px]:w-[min(100vw-20px,100%)] max-[720px]:pt-3.5">
@@ -359,9 +360,14 @@ function App() {
         <Panel className="flex flex-col">
           <PanelHeader
             action={
-              <Button onClick={clearAll} type="button">
-                Clear progress
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={clearAll} type="button" variant="secondary">
+                  Clear all
+                </Button>
+                <Button onClick={completeAll} type="button" variant="secondary">
+                  Select all
+                </Button>
+              </div>
             }
             title="Race List"
           />
