@@ -208,7 +208,7 @@ function Panel({ children, className = "" }: PanelProps) {
 
 function PanelHeader({ title, description, action }: PanelHeaderProps) {
   return (
-    <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-5">
+    <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
       <div>
         <h2>{title}</h2>
         {description ? (
