@@ -208,7 +208,7 @@ function Panel({ children, className = "" }: PanelProps) {
 
 function PanelHeader({ title, description, action }: PanelHeaderProps) {
   return (
-    <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+    <div className="flex min-h-16 flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
       <div>
         <h2>{title}</h2>
         {description ? (
@@ -358,10 +358,10 @@ function App() {
           <PanelHeader
             action={
               <div className="flex flex-wrap gap-2">
-                <Button onClick={clearAll} type="button" variant="secondary">
+                <Button onClick={clearAll} size="sm" type="button" variant="secondary">
                   Clear all
                 </Button>
-                <Button onClick={completeAll} type="button" variant="secondary">
+                <Button onClick={completeAll} size="sm" type="button" variant="secondary">
                   Complete all
                 </Button>
               </div>
